@@ -34,9 +34,6 @@
                 .attr('class','chart');
 
           
-                        
-
-          
 
       /*
         Dimple.js Chart construction code
@@ -64,17 +61,10 @@
             }
             if (s_var === 2) {
               myChart1.addPctAxis("y", "Count");
-              myChart1.addSeries("Survived", dimple.plot.bar);                
-            }              
+              myChart1.addSeries("Survived", dimple.plot.bar);              
+            }
+              
             return myChart1
-          }
-
-          function inter_active(){
-              var myChart1 = new dimple.chart(svg, data);
-              var x = myChart1.addCategoryAxis("x", "Pclass"); 
-              myChart1.addPctAxis("y", "Count");
-              myChart1.addSeries("Survived", dimple.plot.bar); 
-              myChart1.draw();
           }
 
           var chart_id = 0;
@@ -87,12 +77,9 @@
 
                   if(chart_id >= x_list.length) {
                       clearInterval(chart_interval);
-                      // interactive
-                      myChart.svg.selectAll('*').remove();
-                      myChart = inter_active()
                   }
-              }, 100);
-         
+              }, 1000);
+
           
         }
                   
