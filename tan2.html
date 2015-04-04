@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <style>
+      h2 {
+        text-align: center;
+        color: black;
+      }
+    </style>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+
+    
+
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+          "use strict";
+          var margin = 75,
+              width = 1400 - margin,
+              height = 600 - margin;
+              debugger;
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+          
+
+      /*
+        Dimple.js Chart construction code
+      */   
+          //h2
+          d3.select("body")
+          .append("h2")
+          .text("World Cup ");
+
+          var my_list=["Count","Type","Age"];
+          var id=0
+          var x_var = my_list[id];
+
+          function update_chart(p1) {
+            var myChart1 = new dimple.chart(svg, data);
+            var x = myChart1.addCategoryAxis("x", p1); 
+            myChart1.addMeasureAxis("y", "Count");
+            myChart1.addSeries("Survived", dimple.plot.bar);
+
+            //myChart1.draw();
+
+            var myChart2 = new dimple.chart(svg, data);
+            var x = myChart2.addCategoryAxis("x", "Pclass"); 
+            myChart2.addPctAxis("y", "Pclass");
+            myChart2.addSeries("Survived", dimple.plot.bar);
+            //setTimeout(myChart2.draw(), 5000);
+            //*myChart2.draw();
+            return myChart1
+          }
+
+          var year_id = 0;
+          var myChart = new dimple.chart(svg, data);
+          var year_interval = setInterval(function() {
+                  myChart.svg.selectAll('*').remove();
+                  myChart = update_chart(my_list[year_id]);
+                  myChart.draw();
+                  year_id ++ ;
+
+                  if(year_id >= my_list.length) {
+                      clearInterval(year_interval);
+                  }
+
+                }, 1000);
+
+          
+        }
+          
+          //setTimeout(update_chart(),10000);
+         //setTimeout(function(){ alert("Hello"); }, 1000);
+                  
+        
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("train2.csv", draw);
+
+
+
+  </script>
+</body>
+</html>
