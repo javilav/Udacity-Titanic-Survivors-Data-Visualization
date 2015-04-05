@@ -70,9 +70,11 @@
           }
 
           function inter_active(){
+              data=dimple.filterData(data, "Type", '2');
               var myChart1 = new dimple.chart(svg, data);
               var x = myChart1.addCategoryAxis("x", "Pclass"); 
-              myChart1.addPctAxis("y", "Count");
+              //myChart1.addPctAxis("y", "Count");
+              myChart1.addMeasureAxis("y", "Count");
               myChart1.addSeries("Survived", dimple.plot.bar); 
               myChart1.draw();
           }
