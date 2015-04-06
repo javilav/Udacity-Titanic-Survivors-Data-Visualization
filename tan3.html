@@ -9,13 +9,13 @@
         color: black;
       }
 
-      div.years_buttons {
+      div.type_buttons {
         position: fixed;
         top: 5px;
         left: 50px;
       }
 
-      div.years_buttons div {
+      div.type_buttons div {
         background-color: rgb(251, 201, 127);
         padding: 3px;
         margin: 7px;
@@ -45,7 +45,7 @@
             .append('g')
                 .attr('class','chart');
 
-          var years = ['1','2','3'];
+          var button_labels = ['1','2','3'];
           
 
       /*
@@ -94,13 +94,25 @@
 
 
           function update(p1) {
-            if (p1==="1"){
-              //var myChart.svg.selectAll('*').remove();
-              d3.select("h2")
-                .text("World Cup " + p1);
 
-              var interactive_chart = new dimple.chart(svg, data);
-                  interactive_chart = inter_active('2');
+            // if button '1' is clicked
+            if (p1==="1"){
+              d3.select("h2")
+                .text("title " + p1);
+              var chart1 = svg.selectAll('*').remove(); 
+              chart1 = new dimple.chart(svg, data);
+              chart1 = update_chart("Count",1);
+              chart1.draw();
+            }
+
+            if (p1==="2"){
+              d3.select("h2")
+                .text("title " + p1);
+              var chart1 = svg.selectAll('*').remove(); 
+              chart1 = new dimple.chart(svg, data);
+              chart1 = update_chart("Pclass",1);
+              chart1.draw();
+              
             }
           };
 
@@ -120,17 +132,18 @@
                   
 
 
-                      // interactive
+                      // create a interactive chart
                       var interactive_chart = new dimple.chart(svg, data);
-                      interactive_chart = inter_active('3');
+                      interactive_chart = update_chart("Pclass",1);
+                      interactive_chart.draw();
 
 
-
+                      //create buttons
                       var buttons = d3.select("body")
                         .append("div")
-                        .attr("class", "years_buttons")
+                        .attr("class", "type_buttons")
                         .selectAll("div")
-                        .data(years)
+                        .data(button_labels)
                         .enter()
                         .append("div")
                         .text(function(d) {
@@ -139,7 +152,7 @@
 
 
                       buttons.on("click", function(d) {
-                              d3.select(".years_buttons")
+                              d3.select(".type_buttons")
                                 .selectAll("div")
                                 .transition()
                                 .duration(500)
@@ -151,6 +164,7 @@
                                 .duration(500)
                                 .style("background", "lightBlue")
                                 .style("color", "white");
+                               // update chart when button are clicked
                               update(d);
                       });
 
