@@ -12,14 +12,16 @@
 
       div.type_buttons {
         position: fixed;
-        top: 5px;
-        left: 50px;
+        top: 100px;
+        left: 900px;
       }
 
       div.type_buttons div {
         background-color: rgb(251, 201, 127);
         padding: 3px;
         margin: 7px;
+      }
+
       }
     </style>
 
@@ -35,16 +37,15 @@
       */
 
           "use strict";
-          var margin = 75,
-              width = 1400 - margin,
-              height = 600 - margin;
+          var margin = 200,
+              width = 1000 - margin,
+              height = 500 - margin;
 
           // header
           d3.select("body")
             .append("h2")
-            .text("People Survived");
+            .text("Survival Chance on the Titanic");
 
-          debugger;
 
           var svg = d3.select("body")
               .append("svg")
@@ -53,50 +54,24 @@
               .append('g')
               .attr('class','chart');
             
-          
-
-          var button_labels = ['1','2','3'];
-          
+          var button_labels = ['All Passengers','Children','Men','Women'];
 
       /*
         Dimple.js Chart construction code
       */   
           
 
-          var x_list=["Count","Count","Pclass","Pclass","Pclass"];
-          var s_list=[0,1,0,1,2];
+          //var x_list=["Count","Count","Class","Class","Class"];
+          var x_list=["All Passengers",'Children','Men',"All Passengers"];
 
           // update chart
-          function update_chart(x_var,s_var,data2) {
+          function update_chart(x_var,data2) {
             var myChart1 = new dimple.chart(svg, data2);
             var x = myChart1.addCategoryAxis("x", x_var); 
-            
-            if (s_var === 0) {
-              myChart1.addMeasureAxis("y", "Count");
-              myChart1.addSeries(null, dimple.plot.bar);
-            }             
-            if (s_var === 1) {
-              myChart1.addMeasureAxis("y", "Count");
-              myChart1.addSeries("Survived", dimple.plot.bar);
-            }
-            if (s_var === 2) {
-              myChart1.addPctAxis("y", "Count");
-              myChart1.addSeries("Survived", dimple.plot.bar);                
-            }              
+            myChart1.addLegend(200, 10, 380, 20, "right");           
+            myChart1.addMeasureAxis("y", "Count");
+            myChart1.addSeries("Survived", dimple.plot.bar);           
             return myChart1
-          }
-
-
-          
-
-          function inter_active(p1){
-              data=dimple.filterData(data, "Type", p1);
-              var myChart1 = new dimple.chart(svg, data);
-              var x = myChart1.addCategoryAxis("x", "Pclass"); 
-              //myChart1.addPctAxis("y", "Count");
-              myChart1.addMeasureAxis("y", "Count");
-              myChart1.addSeries("Survived", dimple.plot.bar); 
-              myChart1.draw();
           }
 
 
@@ -104,34 +79,37 @@
 
               var chart1 = svg.selectAll('*').remove(); 
 
-              if (p1==="1"){
+              if (p1==="All Passengers"){
                 d3.select("h2")
-                  .text("title " + 'children');
-                var data2 = dimple.filterData(data, "Type", '1');
-                //chart1 = new dimple.chart(svg, data );
-                chart1 = update_chart("Pclass",1,data2);
+                  .text("Survival Chance on the Titanic " + '(All Passengers)');
+                var data2 = data;
+                chart1 = update_chart("Class",data2);
                 chart1.draw();
-
               }
 
-              if (p1==="2"){
+              if (p1==="Children"){
                 d3.select("h2")
-                  .text("title " + 'men');
-                var data2 = dimple.filterData(data, "Type", '2');
-                //chart1 = new dimple.chart(svg, data );
-                chart1 = update_chart("Pclass",1,data2);
-                chart1.draw();         
+                  .text("Survival Chance on the Titanic " + '(Children)');
+                var data2 = dimple.filterData(data, "Type", 'Children');
+                chart1 = update_chart("Class",data2);
+                chart1.draw();
               }
 
-              if (p1==="3"){
+              if (p1==="Men"){
                 d3.select("h2")
-                  .text("title " + 'women');
-                var data2 = dimple.filterData(data, "Type", '3');
-                //chart1 = new dimple.chart(svg, data );
-                chart1 = update_chart("Pclass",1,data2);
-                chart1.draw();     
+                  .text("Survival Chance on the Titanic " + '(Men)');
+                var data2 = dimple.filterData(data, "Type", 'Men');
+                chart1 = update_chart("Class",data2);
+                chart1.draw();  
               }
 
+              if (p1==="Women"){
+                d3.select("h2")
+                  .text("Survival Chance on the Titanic " + '(Women)');
+                var data2 = dimple.filterData(data, "Type", 'Women');
+                chart1 = update_chart("Class",data2);
+                chart1.draw();  
+              }
           };
 
           var chart_id = 0;
@@ -139,22 +117,12 @@
           var myChart = new dimple.chart(svg, data2);
           var chart_interval = setInterval(function() {
                   myChart.svg.selectAll('*').remove();
-                  myChart = update_chart(x_list[chart_id],s_list[chart_id],data);
-                  myChart.draw();
+                  debugger
+                  update(x_list[chart_id])
                   chart_id ++ ;
 
                   if(chart_id >= x_list.length) {
                       clearInterval(chart_interval);
-
-                      myChart.svg.selectAll('*').remove();
-                    
-                  
-                      // create a interactive chart
-                      var data2 =data;
-                      var interactive_chart = new dimple.chart(svg, data2);
-                      interactive_chart = update_chart("Pclass",1,data2);
-                      interactive_chart.draw();
-
 
                       //create buttons
                       var buttons = d3.select("body")
@@ -169,7 +137,7 @@
                         });
 
 
-                      buttons.on("click", function(d) {
+                      buttons.on("click", function(d,plot_type) {
                               d3.select(".type_buttons")
                                 .selectAll("div")
                                 .transition()
@@ -183,11 +151,13 @@
                                 .style("background", "lightBlue")
                                 .style("color", "white");
                                // update chart when button are clicked
-                              update(d);
+                                update(d);
                       });
 
+                      
+
                   }
-              }, 200);
+              }, 1500);
         }
                   
       </script>
@@ -198,7 +168,7 @@
     Use D3 (not dimple.js) to load the TSV file
     and pass the contents of it to the draw function
     */
-  d3.csv("train2.csv", draw);
+  d3.csv("train.csv", draw);
 
 
 
