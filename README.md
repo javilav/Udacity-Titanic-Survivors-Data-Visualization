@@ -17,9 +17,9 @@ Stacked 100% bar chart are used to show the comparison of the chance of survival
 Interaction is used to one more dimension, the category of data aggregated by gender and whether one is a child.
 
 
-### Visual Encoding:
-*x position: passenger class.
-*y position: the counts or the percentage of passenger. 
+#### Visual Encoding:
+* x position: passenger class.
+* y position: the counts or the percentage of passenger. 
 color hue: survived or perished.
 additional: interactive chart is used to show data aggregated by gender and whether a passenger is a child.
 
@@ -47,6 +47,6 @@ The animation is too fast. viewers don’t have enough time to absorb the inform
 The color chosen to represent “survived” and “perished” is not straightforward. One need to look at the legend to know which category it stands. A better way is to use more scales darker hue to represent people perished and lighter hue to represent people survived, so that people can easily associate the color and the category.
 
 ## Resources 
-Titanic data set: https://www.kaggle.com/c/titanic-gettingStarted
+* Titanic data set: https://www.kaggle.com/c/titanic-gettingStarted
 dimple js examples: http://dimplejs.org/examples_index.html
 RGB color chart:  http://www.rapidtables.com/web/color/RGB_Color.htm
