@@ -16,8 +16,6 @@
         color: black;
       }
 
-
-
       div.type_buttons {
         position: fixed;
         top: 145px;
@@ -60,7 +58,6 @@
               height = 500 - margin;
 
           // header
-
           d3.select("body")
             .append("h2")
             .text("Survival Chance on the Titanic");
@@ -68,7 +65,6 @@
           d3.select("body")
             .append("h3")
             .text("All Passengers");  
-
           //debugger;
 
           var svg = d3.select("body")
@@ -77,7 +73,7 @@
               .attr("height", height + margin)
               .append('g')
               .attr('class','chart');
-            
+
           var button_labels = ['All Passengers','Children','Men','Women'];
           var button_labels2 = ['Absolute Value','Percentage'];
 
@@ -85,71 +81,72 @@
         Dimple.js Chart construction code
       */   
 
+          // update chart when button 1 are clicked
           function update_which_group(wg,ct) {
-              // chart_type: 'Bar', 'Absolute Value','Percentage';
               create_chart(wg,ct)
               return wg
           };
 
-
+          // update chart when button 2 are clicked
           function update_chart_type(ct,wg) {
-            // chart_type: 'Bar', 'Absolute Value','Percentage';
-              create_chart(wg,ct)
-              return ct
+                create_chart(wg,ct)
+                return ct
           };
 
+          // update chart which category of data to show
           function create_chart(which_group,plot_type){
+                var chart1 = svg.selectAll('*').remove(); 
 
-              var chart1 = svg.selectAll('*').remove(); 
-              if (which_group==="All Passengers"){
-                d3.select("h3")
-                  .text("All Passengers");
-                var data2 = data;
-              }
+                // filter the data base on different categories
+                if (which_group==="All Passengers"){
+                  d3.select("h3")
+                    .text("All Passengers"); // update the titles
+                  var data2 = data;
+                }
 
-              if (which_group==="Children"){
-                d3.select("h3")
-                  .text("Children");
-                var data2 = dimple.filterData(data, "Type", 'Children');
-              }
+                if (which_group==="Children"){
+                  d3.select("h3")
+                    .text("Children");
+                  var data2 = dimple.filterData(data, "Type", 'Children');
+                }
 
-              if (which_group==="Men"){
-                d3.select("h3")
-                  .text("Men");
-                var data2 = dimple.filterData(data, "Type", 'Men');
-              }
+                if (which_group==="Men"){
+                  d3.select("h3")
+                    .text("Men");
+                  var data2 = dimple.filterData(data, "Type", 'Men');
+                }
 
-              if (which_group==="Women"){
-                d3.select("h3")
-                  .text("Women");
-                var data2 = dimple.filterData(data, "Type", 'Women'); 
-              }
+                if (which_group==="Women"){
+                  d3.select("h3")
+                    .text("Women");
+                  var data2 = dimple.filterData(data, "Type", 'Women'); 
+                }
 
-              chart1 = update_chart("Class",plot_type,data2);
-              chart1.assignColor('Perished', "#000066", "black", 0.7);         
-              chart1.draw();  
+                chart1 = update_chart("Class",plot_type,data2);
+                chart1.assignColor('Perished', "#000066", "black", 0.7);         
+                chart1.draw();  
           }
 
-
-          // update chart
+          // update chart type absoulte value or pecentage
           function update_chart(x_var,s_var,data2) {
-            var myChart1 = new dimple.chart(svg, data2);
-            var x = myChart1.addCategoryAxis("x", x_var); 
-            x.addOrderRule(["1st class","2nd class","3rd class"])    
-            myChart1.addLegend(200, 10, 380, 20, "right");
-                       
-            if (s_var === 'Absolute Value') {
-              myChart1.addMeasureAxis("y", "Count");
-              var mySeries = myChart1.addSeries("Survived", dimple.plot.bar);
-              mySeries.addOrderRule(["Perished","Survived"])
-            }
-            if (s_var === 'Percentage') {
-              myChart1.addPctAxis("y", "Count");
-              var mySeries = myChart1.addSeries("Survived", dimple.plot.bar);  
-              mySeries.addOrderRule(["Perished","Survived"])              
-            }              
+                var myChart1 = new dimple.chart(svg, data2);
+                var x = myChart1.addCategoryAxis("x", x_var); 
+                x.addOrderRule(["1st class","2nd class","3rd class"])    
+                myChart1.addLegend(200, 10, 380, 20, "right");
 
-            return myChart1
+                // add y axile as absolution value         
+                if (s_var === 'Absolute Value') {
+                  myChart1.addMeasureAxis("y", "Count");
+                  var mySeries = myChart1.addSeries("Survived", dimple.plot.bar);
+                  mySeries.addOrderRule(["Perished","Survived"])
+                }
+                // add y axile as percentage 
+                if (s_var === 'Percentage') {
+                  myChart1.addPctAxis("y", "Count");
+                  var mySeries = myChart1.addSeries("Survived", dimple.plot.bar);  
+                  mySeries.addOrderRule(["Perished","Survived"])              
+                }              
+                return myChart1
           }
 
 
@@ -161,9 +158,10 @@
           d3.select("h3")
             .text("All Passengers");
 
+          // create inicial chart
           create_chart('All Passengers','Absolute Value')
 
-          //create buttons
+          //create buttons 1
           var buttons = d3.select("body")
                            .append("div")
                            .attr("class", "type_buttons")
@@ -188,14 +186,13 @@
                                   .duration(500)
                                   .style("background", "lightBlue")
                                   .style("color", "white");
-                                 // update chart when button are clicked
                                  //debugger;
                                   which_group = update_which_group(d,chart_type);
                                   
                                   
                               });
 
-                      //create buttons
+        //create buttons 2 
          var buttons2 = d3.select("body")
                         .append("div")
                         .attr("class", "type_buttons2")
@@ -237,7 +234,7 @@
     Use D3 (not dimple.js) to load the TSV file
     and pass the contents of it to the draw function
     */
-  d3.csv("train.csv", draw);
+  d3.csv("train.csv", draw); // load data
 
 
 

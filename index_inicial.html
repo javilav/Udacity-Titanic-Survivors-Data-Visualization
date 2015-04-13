@@ -60,11 +60,9 @@
         Dimple.js Chart construction code
       */   
           
-
-          //var x_list=["Count","Count","Class","Class","Class"];
           var x_list=["All Passengers",'Children','Men',"All Passengers"];
 
-          // update chart
+          // update chart which category of data to show
           function update_chart(x_var,data2) {
             var myChart1 = new dimple.chart(svg, data2);
             var x = myChart1.addCategoryAxis("x", x_var); 
@@ -74,9 +72,8 @@
             return myChart1
           }
 
-
+          // update chart which category of data to show
           function update(p1) {
-
               var chart1 = svg.selectAll('*').remove(); 
 
               if (p1==="All Passengers"){
@@ -115,9 +112,11 @@
           var chart_id = 0;
           var data2 =data;
           var myChart = new dimple.chart(svg, data2);
+
+          // create animation
           var chart_interval = setInterval(function() {
                   myChart.svg.selectAll('*').remove();
-                  debugger
+                  //debugger
                   update(x_list[chart_id])
                   chart_id ++ ;
 
@@ -153,9 +152,6 @@
                                // update chart when button are clicked
                                 update(d);
                       });
-
-                      
-
                   }
               }, 1500);
         }
