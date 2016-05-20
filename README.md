@@ -1,5 +1,4 @@
 # Data Visualization with D3.js Final Project 
-by Darui Zhang
 ## Summary 
 In the tragic sinking of the Titanic, 68% of the passengers on board perished. However, there is a large difference in the chance of survival across passenger class as well as in gender and whether one and a child. This visualization aims to emphasis the difference survival chance across categories, so that the viewers can compare it easily. Moreover, interactive chart allows the viewers to explore the category of interest on their own.
 
